@@ -780,9 +780,9 @@ footer {
     </div>
     <div class="contact-wrap reveal">
       <p style="color:var(--muted);font-size:0.85rem;letter-spacing:0.1em;margin-bottom:0.5rem"
-         data-es="¿Bookings, prensa, colaboraciones?"
-         data-en="Bookings, press, collaborations?"
-         data-zh="预约演出、媒体合作？">¿Bookings, prensa, colaboraciones?</p>
+         data-es="¿Bookings, prensa, colaboraciones? Escríbenos por WhatsApp."
+         data-en="Bookings, press, collaborations? Reach us on WhatsApp."
+         data-zh="预约演出、媒体合作？请通过 WhatsApp 联系我们。">¿Bookings, prensa, colaboraciones? Escríbenos por WhatsApp.</p>
       <form class="contact-form" onsubmit="handleForm(event)">
         <input type="text" name="nombre"
                data-placeholder-es="Nombre" data-placeholder-en="Name" data-placeholder-zh="姓名"
@@ -792,7 +792,7 @@ footer {
                   data-placeholder-es="Mensaje" data-placeholder-en="Message" data-placeholder-zh="留言"
                   placeholder="Mensaje"></textarea>
         <button type="submit" class="btn-ritual"
-                data-es="Enviar" data-en="Send" data-zh="发送">Enviar</button>
+                data-es="Enviar por WhatsApp" data-en="Send via WhatsApp" data-zh="通过 WhatsApp 发送">Enviar por WhatsApp</button>
       </form>
     </div>
   </div>
@@ -895,15 +895,11 @@ function handleForm(e) {
   const nombre = form.nombre.value.trim();
   const email = form.email.value.trim();
   const mensaje = form.mensaje.value.trim();
-  const mailBody = `${mensaje}\n\n— ${nombre}\nEmail: ${email}`;
-  const mailSubject = `Contacto de ${nombre}`;
 
-  if (WHATSAPP_NUMBER) {
-    const waBody = `Hola Sigillvm, mensaje desde la web:\n\n${mensaje}\n\n— ${nombre}\nEmail: ${email}`;
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waBody)}`, '_blank', 'noopener');
-  }
+  if (!WHATSAPP_NUMBER) return;
 
-  window.location.href = `mailto:sigillvm@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+  const waBody = `Hola Sigillvm, mensaje desde la web:\n\n${mensaje}\n\n— ${nombre}\nEmail: ${email}`;
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waBody)}`, '_blank', 'noopener');
   form.reset();
 }
 </script>
