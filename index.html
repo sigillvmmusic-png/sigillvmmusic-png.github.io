@@ -291,6 +291,44 @@ section { padding: 8rem 0; }
 .member-role { font-size: 0.75rem; color: var(--crimson); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.25rem; }
 .member-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(139,0,0,0.15), transparent 60%); pointer-events: none; }
 
+/* Orígenes — ex integrantes (mismo marco 3:4, grid centrado) */
+.origins-block {
+  margin-top: 5rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--border);
+}
+.origins-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.origins-header .section-eyebrow { margin-bottom: 0.75rem; }
+.origins-header .section-title {
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  margin-bottom: 1rem;
+}
+.origins-intro {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 32rem;
+  margin: 0 auto;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.members-grid--origins {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+.member-card--origin img[src=""] {
+  aspect-ratio: 3/4;
+  width: 100%;
+  display: block;
+  background: linear-gradient(160deg, var(--mid) 0%, var(--surface) 55%, var(--darker) 100%);
+  object-fit: cover;
+}
+
 /* ── MÚSICA ── */
 #musica { background: var(--dark); position: relative; }
 #musica::before {
@@ -433,6 +471,7 @@ footer {
   nav { padding: 1rem 1.2rem; }
   .nav-links { display: none; }
   .members-grid { grid-template-columns: repeat(2, 1fr); }
+  .members-grid--origins { max-width: none; }
   .releases-grid { grid-template-columns: repeat(3, 1fr); }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
   section { padding: 5rem 0; }
@@ -580,7 +619,40 @@ footer {
           <div class="member-name">Fabián Marín</div>
           <div class="member-role" data-es="Tecladista" data-en="Keyboardist" data-zh="键盘手">Tecladista</div>
         </div>
-      </div></div>
+      </div>
+    </div>
+
+    <div class="origins-block reveal">
+      <div class="origins-header">
+        <p class="section-eyebrow" data-es="Trayectoria" data-en="Legacy" data-zh="历程">Trayectoria</p>
+        <h3 class="section-title" data-es="Orígenes de la Banda" data-en="Band Origins" data-zh="乐队渊源">Orígenes de la Banda</h3>
+        <div class="rune-divider"><span class="rune-symbol">✦</span></div>
+        <p class="origins-intro"
+           data-es="Integrantes que formaron parte de la alineación y el sonido en etapas anteriores de Sigillvm."
+           data-en="Members who were part of the lineup and sound in earlier chapters of Sigillvm."
+           data-zh="曾在 Sigillvm 早期阵容与声音中留下印记的成员。">
+          Integrantes que formaron parte de la alineación y el sonido en etapas anteriores de Sigillvm.
+        </p>
+      </div>
+      <div class="members-grid members-grid--origins reveal-stagger">
+        <div class="member-card member-card--origin">
+          <img src="images/sigillvm_alan.avif" alt="Alan López">
+          <div class="member-overlay"></div>
+          <div class="member-info">
+            <div class="member-name">Alan López</div>
+            <div class="member-role" data-es="Voz y Guitarra" data-en="Vocals &amp; Guitar" data-zh="主唱 &amp; 吉他">Voz y Guitarra</div>
+          </div>
+        </div>
+        <div class="member-card member-card--origin">
+          <img src="images/sigillvm_fer.jpeg" alt="Fer">
+          <div class="member-overlay"></div>
+          <div class="member-info">
+            <div class="member-name">Fer</div>
+            <div class="member-role" data-es="Bajo" data-en="Bass" data-zh="贝斯">Bajo</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -814,13 +886,24 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 });
 
 // ── CONTACT FORM ──
+// WhatsApp: código de país + número, sin +, espacios ni guiones (ej. 5213312345678)
+const WHATSAPP_NUMBER = '523314010090';
+
 function handleForm(e) {
   e.preventDefault();
   const form = e.target;
-  const nombre = form.nombre.value;
-  const email = form.email.value;
-  const mensaje = form.mensaje.value;
-  window.location.href = `mailto:sigillvm@gmail.com?subject=Contacto de ${nombre}&body=${encodeURIComponent(mensaje)}%0A%0AEmail: ${email}`;
+  const nombre = form.nombre.value.trim();
+  const email = form.email.value.trim();
+  const mensaje = form.mensaje.value.trim();
+  const mailBody = `${mensaje}\n\n— ${nombre}\nEmail: ${email}`;
+  const mailSubject = `Contacto de ${nombre}`;
+
+  if (WHATSAPP_NUMBER) {
+    const waBody = `Hola Sigillvm, mensaje desde la web:\n\n${mensaje}\n\n— ${nombre}\nEmail: ${email}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waBody)}`, '_blank', 'noopener');
+  }
+
+  window.location.href = `mailto:sigillvm@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
   form.reset();
 }
 </script>
